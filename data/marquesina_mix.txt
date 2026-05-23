@@ -1,69 +1,20 @@
-____________¿Cómo la mente humana intenta conservar sueños antes del amanecer____________
+y el proyecto empieza a respirar como un sistema profesional en miniatura.
 
-Las redes informáticas reproducían patrones miceliales. Los humanos construyeron computadoras creyendo haber inventado algo radicalmente nuevo. 
-Persiste intentando explicar la conciencia utilizando cerebros producidos por evolución ciega.
+src queda puro,
 
-____________lamentos_y_aciertos_de_Degonómitron Phillis____________
+### Hay verdades que sobreviven el invierno Lords ###
 
+porque entonces:
+### En el clima de lo vívido ###
 
-Porque el Mundo Humano posee una propiedad extraordinaria:  que cualquier framework empresarial.
-
-  --Construye ciudades rectangulares sobre territorios sísmicos--  
-____***marquesina_en_desplazamiento__%#"*estable***____
-Los volcanes compilan presión tectónica.
-Las bacterias seguían negociando territorios invisibles bajo las uñas de ministros y cajeros nocturnos.
-No en haber conquistado la naturaleza, pero la física jamás reconoció aquellas fronteras.
-  --Persiste transmitiendo memes absurdos entre satélites orbitales--  
-#   Convierte el tiempo y en salario   #
+  ***DEGONOMITRÓN***  
 
 
-   """"Adjunto PDF para revisión""""   
-Como bosques enteros comunicándose bajo la tierra mediante filamentos invisibles...
-...Hubo un tiempo en que los seres humanos imaginaron que vivían separados del universo.
-   Levantaron muros, edificios y algoritmos financieros como si la conciencia fuese una isla suspendida fuera de la gravedad de las estrellas.
-Y entretanto, en oficinas iluminadas por tubos LED,
-La informática moderna no es una separación del mundo natural.
 
-  EL MUNDO HUMANO COMO SISTEMA OPERATIVO___
+java -cp bin Main
+Aunque honestamente, ya veo otra mejora arquitectónica acercándose desde la niebla: actualmente compilas .class tanto en src/ como en bin/. Eso terminará generando builds ambiguos. Más adelante deberías compilar así:
 
-__En el clima de lo vívido  ###  
-Convierte la atención en mercancía.
 
-  La memoria RAM recordaba impulsos efímeros,
-
-### Hay verdades que sobreviven el invierno ###
-
-  Persiste escribiendo poemas dentro de notebooks.
-    Mientras tanto,
-
-  Convierte el silencio en sospecha.
-
- Quizás allí reside su belleza...--°°°°°°°
-
-Como una cinta transportadora de conciencia 
-sin emitir una sola notificación de error.
-Miles de trabajadores escribían:
-El absurdo jamás abandonó la escena.
-La informática apareció entonces no como una anomalía, sino como un espejo.
-pero en realidad habían comenzado a copiar discretamente a la naturaleza.
-
-    Los ecosistemas funcionan mediante dependencias mutuas más sofisticadas
-    Es simultáneamente sublime y tragicómico.
-Persiste enamorándose mediante protocolos de red. 
-Como un pequeño noticiero emitido desde el borde tragicómico de la civilización humana.
- ***Comounpequeñonoticieroemitidodesdeelbordetragicómicodelacivilizaciónhumana_
-_____________________________________________........---------°°°
-Los océanos persistían respirando mareas lunares.
-Ella ES el sistema operativo.
-El ser humano, sin embargo, insiste en intentar separarse de aquello.
-sino en ser una manifestación particularmente dramática de ella.
-La naturaleza no utiliza sistemas operativos.
-Es la naturaleza observándose a sí misma mediante silicio.
-Un programador puede pasar ocho horas intentando corregir una coma faltante
-mientras afuera el planeta gira a 107.000 kilómetros por hora alrededor del Sol
-Las montañas continuaban erosionándose.
-
-Los árboles ejecutan fotosíntesis como procesos de larga duración.
-
-Y aun así el Mundo Humano persiste.
-Como un río de texto.
+bin concentra bytecode,
++++ Lamentos____y____aciertos de Degonómitron Phillis_______ +++
+javac -d bin src/*.java

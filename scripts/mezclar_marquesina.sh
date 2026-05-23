@@ -1,52 +1,49 @@
 #!/bin/bash
 
-# ====================================================
-# TXT MIXER
-# ====================================================
-# Pipeline textual previo al runtime.
-#
-# Bash:
-# excelente para automatización de archivos.
-#
-# Responsabilidad:
-# - unir textos,
-# - mezclarlos,
-# - generar transmisión consolidada.
-# ====================================================
-# ====================================================
-# ORIGEN DE NOTAS
-# ====================================================
-ORIGEN="data/text"
+# =========================================
+# UBICACIÓN REAL DEL SCRIPT
+# =========================================
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 # =========================================
-# ARCHIVO FINAL
+# RUTAS ABSOLUTAS
 # =========================================
-SALIDA="data/marquesina_mix.txt"
+ORIGEN="$BASE_DIR/data/txt"
+SALIDA="$BASE_DIR/data/marquesina_mix.txt"
 
 # Limpia archivo anterior
 > "$SALIDA"
 
 # =========================================
-# CREA ARCHIVO TEMPORAL
+# TEMPORAL
 # =========================================
 TEMP=$(mktemp)
 
 # =========================================
-# EXTRACCIÓN. RECORRE EL CONTENIDO DE LOS TXT
+# MEZCLA TXT
 # =========================================
-for archivo in "$ORIGEN"/*.txt
-do
+for archivo in "$ORIGEN"/*.txt; do
+
+    [ -f "$archivo" ] || continue
+
     cat "$archivo" >> "$TEMP"
     echo "" >> "$TEMP"
+
 done
 
 # =========================================
-# MEZCLA LÍNEAS ALEATORIAMENTE
+# DEBUG VISUAL
+# =========================================
+echo "=== CONTENIDO TEMPORAL ==="
+cat "$TEMP"
+
+# =========================================
+# SHUFFLE
 # =========================================
 shuf "$TEMP" > "$SALIDA"
 
 # =========================================
-# LIMPIA TEMPORAL
+# LIMPIEZA
 # =========================================
 rm "$TEMP"
 

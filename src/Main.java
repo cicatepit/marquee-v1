@@ -71,6 +71,18 @@ public class Main extends JPanel {
 
         iniciarRecargaTexto();
         iniciarAnimacion();
+        
+        // ====================================
+        // WATCHER DEL DIRECTORIO
+        // ====================================
+
+        FileWatcher watcher =
+            new FileWatcher(this);
+
+        
+        new Thread(
+            () -> watcher.observarDirectorio()
+    ).start();
     }
 /*
     ====================================================
@@ -143,6 +155,24 @@ public class Main extends JPanel {
                 });
 
         recargaNotas.start();
+    }
+
+   /*
+   ====================================================
+   ACTUALIZACIÓN DE TRANSMISIÓN
+   ====================================================
+   Actualiza la consolidación de <marquesina_mix.txt>.*/
+
+    public void actualizarMensaje() {
+
+        mensaje =
+                TextLoader.cargarTexto(
+                        AppConfig.RUTA_NOTAS
+                );
+
+        System.out.println(
+                "Transmisión actualizada."
+        );
     }
 /*
     ====================================================
