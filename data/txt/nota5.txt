@@ -1,10 +1,9 @@
-Aunque honestamente, ya veo otra mejora arquitectónica acercándose desde la niebla: actualmente compilas .class tanto en src/ como en bin/. Eso terminará generando builds ambiguos. Más adelante deberías compilar así:
+Aunque honestamente, ya veo otra mejora arquitectónica acercándose desde la niebla.
 
-javac -d bin src/*.java
-java -cp bin Main
+javac -d bin src/*.java java -cp bin Main  
 
-porque entonces:
+porque entonces:   
 
-src queda puro,
-bin concentra bytecode,
+src queda puro, 
+bin concentra bytecode, 
 y el proyecto empieza a respirar como un sistema profesional en miniatura.
