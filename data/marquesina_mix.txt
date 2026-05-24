@@ -1,19 +1,13 @@
 
-src queda puro, 
-__________________________________________Lamentos y aciertos de Degonómitron Phillis_________________ __-__--___ _-° __--°°    °*-_                       
-y el proyecto empieza a respirar como un sistema profesional en miniatura.
-porque entonces:   
-Aunque honestamente, ya veo otra mejora arquitectónica acercándose desde la niebla.
 
-javac -d bin src/*.java java -cp bin Main  
-
-
-
-bin concentra bytecode, 
-
-
+### Aunque honestamente, ya veo otra mejora arquitectónica acercándose desde la niebla ###
 
 ### En el clima de lo vívido ###
-### Hay verdades que sobreviven el invierno ###
+
   ***DEGONOMITRÓN***  
+
+### Lamentos y aciertos de Degonómitron Phillis ###             
+### Hay verdades que sobreviven el invierno ###
+
+
 

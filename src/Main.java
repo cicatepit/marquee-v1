@@ -1,26 +1,27 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-/*
-====================================================
-MARQUESINA
-====================================================
-Motor visual principal.
+    /*
+    ====================================================
+    MARQUESINA
+    ====================================================
+    Motor visual principal.
 
-Responsabilidades:
-- crear ventana,
-- administrar animación,
-- coordinar recarga textual,
-- renderizar transmisión.
+    Responsabilidades:
+    - crear ventana,
+    - administrar animación,
+    - coordinar recarga textual,
+    - renderizar transmisión.
 
-POO:
-Main extiende JPanel.
-Esto significa que Main ES un panel gráfico.
+    POO:
+    Main extiende JPanel.
+    Esto significa que Main ES un panel gráfico.
 
-Herencia:
-Permite reutilizar comportamiento gráfico de Swing.
-====================================================
-*/
+    Herencia:
+    Permite reutilizar comportamiento gráfico de Swing.
+    ====================================================
+    */
 
 public class Main extends JPanel {
 
@@ -41,7 +42,13 @@ public class Main extends JPanel {
             TextLoader.cargarTexto(AppConfig.RUTA_NOTAS);
 
     // Posición horizontal inicial
-    private int x = 800;
+    private static final int CANTIDAD_TRENES = 6;
+
+        private int[] posicionesX =
+                new int[CANTIDAD_TRENES];
+
+        private int[] velocidades =
+        cargarVelocidades();
 
     /*
     ====================================================
@@ -69,6 +76,10 @@ public class Main extends JPanel {
         // Reduce parpadeo visual
         setDoubleBuffered(true);
 
+        for (int i = 0; i < CANTIDAD_TRENES; i++) {
+        posicionesX[i] = 800 + (i * 260);
+        }
+
         iniciarRecargaTexto();
         iniciarAnimacion();
         
@@ -84,7 +95,7 @@ public class Main extends JPanel {
             () -> watcher.observarDirectorio()
     ).start();
     }
-/*
+    /*
     ====================================================
     ANIMACIÓN PRINCIPAL
     ====================================================
@@ -103,11 +114,13 @@ public class Main extends JPanel {
                 AppConfig.INTERVALO_FRAME,
                 e -> {
 
-                    x -= AppConfig.VELOCIDAD;
+                    for (int i = 0; i < CANTIDAD_TRENES; i++) {
 
-                    if (x < -(mensaje.length() * 14) - 300) {
+                        posicionesX[i] -= velocidades[i];
 
-                        x = getWidth();
+                        if (posicionesX[i] < -(mensaje.length() * 8) - 150) {
+                            posicionesX[i] = getWidth() + (i * 260);
+                        }
                     }
 
                     repaint();
@@ -132,26 +145,53 @@ public class Main extends JPanel {
 
     private void iniciarRecargaTexto() {
 
-        int tiempoRecarga =
-                RenderUtils.calcularTiempoRecarga(mensaje);
-
         System.out.println(
-                "Tiempo estimado ciclo: "
-                + tiempoRecarga / 1000
-                + " segundos"
+                "\n===== CICLOS DE TRANSMISIÓN ====="
         );
 
+        for (int i = 0; i < CANTIDAD_TRENES; i++) {
+
+            int anchoPantalla =
+                    Toolkit
+                            .getDefaultToolkit()
+                            .getScreenSize()
+                            .width;
+
+            int anchoTexto =
+                    mensaje.length() * 8;
+
+            int distanciaTotal =
+                    anchoPantalla + anchoTexto;
+
+            int tiempo =
+                    (
+                            distanciaTotal
+                            / velocidades[i]
+                    ) * AppConfig.INTERVALO_FRAME;
+
+            System.out.println(
+                    "Carril "
+                    + (i + 1)
+                    + " | velocidad "
+                    + velocidades[i]
+                    + " | ciclo estimado: "
+                    + tiempo / 1000
+                    + " segundos"
+            );
+        }
+
         Timer recargaNotas =
-                new Timer(tiempoRecarga, e -> {
+                new Timer(10000, e -> {
 
                     System.out.println(
-                            "Recargando transmisión..."
+                            "\nRecargando transmisión..."
                     );
 
                     mensaje =
                             TextLoader.cargarTexto(
                                     AppConfig.RUTA_NOTAS
                             );
+                    velocidades = cargarVelocidades();
                 });
 
         recargaNotas.start();
@@ -174,7 +214,53 @@ public class Main extends JPanel {
                 "Transmisión actualizada."
         );
     }
-/*
+   
+    /*
+   ====================================================
+   RANDOMIZACIÓN DE VELOCIDADES POR TREN
+   ====================================================
+   Actualiza la consolidación de <random_velocities.sh>.*/
+
+    private int[] cargarVelocidades() {
+
+        int[] nuevasVelocidades =
+                new int[CANTIDAD_TRENES];
+
+        try {
+
+            java.util.List<String> lineas =
+                    java.nio.file.Files.readAllLines(
+                            java.nio.file.Paths.get(
+                                    "data/velocidades.txt"
+                            )
+                    );
+
+            for (
+                    int i = 0;
+                    i < CANTIDAD_TRENES
+                    && i < lineas.size();
+                    i++
+            ) {
+
+                nuevasVelocidades[i] =
+                        Integer.parseInt(
+                                lineas.get(i).trim()
+                        );
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error cargando velocidades."
+            );
+
+            return new int[]{2,2,2,2,2,2};
+        }
+
+        return nuevasVelocidades;
+    }
+
+    /*
     ====================================================
     RENDER
     ====================================================
@@ -197,19 +283,146 @@ public class Main extends JPanel {
 
         RenderUtils.activarAntialias(g2d);
 
-        g.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        28
+        int altoDisponible = getHeight();
+        int altoCarril = altoDisponible / CANTIDAD_TRENES;
+        int tamanoFuente = Math.max(10, altoCarril - 4);
+
+    g.setFont(
+            new Font(
+                    "SansSerif",
+                    Font.BOLD,
+                    tamanoFuente
+            )
+    );
+
+    g.setColor(Color.GREEN);
+
+    for (int i = 0; i < CANTIDAD_TRENES; i++) {
+
+        int y =
+                (altoCarril * i)
+                + altoCarril
+                - 4;
+
+        String renderTexto =
+        mensaje + " ° _ ";
+
+        g.drawString(
+                renderTexto,
+                posicionesX[i],
+                y
+        );
+    }
+
+}
+
+    private static Rectangle calcularAreaPantallas() {
+
+        GraphicsEnvironment entorno =
+                GraphicsEnvironment
+                        .getLocalGraphicsEnvironment();
+
+        Rectangle areaTotal = new Rectangle();
+
+        for (GraphicsDevice pantalla
+                : entorno.getScreenDevices()) {
+
+            Rectangle bounds =
+                    pantalla
+                            .getDefaultConfiguration()
+                            .getBounds();
+
+            areaTotal =
+                    areaTotal.union(bounds);
+        }
+
+        return areaTotal;
+    }
+
+    private static JPanel crearBarraTitulo(JFrame ventana) {
+
+        JPanel barra = new JPanel(new BorderLayout());
+
+        barra.setBackground(Color.BLACK);
+        barra.setBorder(
+                BorderFactory.createMatteBorder(
+                        0,
+                        0,
+                        1,
+                        0,
+                        Color.GREEN
                 )
         );
 
-        g.setColor(Color.GREEN);
+        barra.setPreferredSize(
+                new Dimension(0, 24)
+        );
 
-        g.drawString(mensaje, x, 50);
+        JLabel end = new JLabel(
+                "END",
+                SwingConstants.CENTER
+        );
+
+        end.setForeground(Color.GREEN);
+        end.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.PLAIN,
+                        11
+                )
+        );
+
+        end.setBorder(
+                BorderFactory.createEmptyBorder(
+                        4,
+                        20,
+                        4,
+                        20
+                )
+        );
+
+        end.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (SwingUtilities.isLeftMouseButton(e)) {
+                            System.exit(0);
+                        }
+                    }
+                }
+        );
+
+        barra.add(end, BorderLayout.CENTER);
+
+        return barra;
     }
-/*
+
+    private static void registrarHoverBarra(
+            JPanel contenedor,
+            JPanel barraTitulo
+    ) {
+
+        MouseAdapter hover = new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                barraTitulo.setVisible(true);
+                contenedor.revalidate();
+                contenedor.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                barraTitulo.setVisible(false);
+                contenedor.revalidate();
+                contenedor.repaint();
+            }
+        };
+
+        contenedor.addMouseListener(hover);
+        barraTitulo.addMouseListener(hover);
+    }
+    /*
     ====================================================
     MAIN
     ====================================================
@@ -223,15 +436,36 @@ public class Main extends JPanel {
 
         JFrame ventana = new JFrame("marquee v1");
 
+        ventana.setUndecorated(true);
+
         Main panel = new Main();
 
-        ventana.add(panel);
+        JPanel barraTitulo = crearBarraTitulo(ventana);
+        barraTitulo.setVisible(false);
 
-        ventana.setSize(
-                Toolkit
-                        .getDefaultToolkit()
-                        .getScreenSize()
-                        .width,
+        JPanel contenedor = new JPanel(new BorderLayout());
+        contenedor.setBackground(Color.BLACK);
+        contenedor.setBorder(
+                BorderFactory.createLineBorder(
+                        Color.GREEN,
+                        1
+                )
+        );
+
+        contenedor.add(barraTitulo, BorderLayout.NORTH);
+        contenedor.add(panel, BorderLayout.CENTER);
+
+        registrarHoverBarra(contenedor, barraTitulo);
+
+        ventana.setContentPane(contenedor);
+
+        Rectangle pantalla =
+                calcularAreaPantallas();
+
+        ventana.setBounds(
+                pantalla.x,
+                pantalla.y,
+                pantalla.width,
                 100
         );
 
@@ -239,8 +473,7 @@ public class Main extends JPanel {
                 JFrame.EXIT_ON_CLOSE
         );
 
-        ventana.setLocationRelativeTo(null);
-
         ventana.setVisible(true);
     }
+
 }
